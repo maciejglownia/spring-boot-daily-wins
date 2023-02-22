@@ -1,0 +1,19 @@
+MySQL & Docker
+
+commands:
+docker run --detach --env MYSQL_ROOT_PASSWORD=maciekpassword --env MYSQL_USER=dailywins-user --env MYSQL_PASSWORD=password --env MYSQL_DATABASE=dailywins --name mysql-daily-wins --publish 3306:3306 mysql:oracle
+
+mysqlsh // needs to be installed if you do not have it
+\connect dailywins-user@localhost:3306
+\use dailywins
+\sql
+select * from dailywins; // make sure you have proper table name
+\quit
+
+
+http://localhost:8080/login
+username = maciek
+password = done
+
+
+

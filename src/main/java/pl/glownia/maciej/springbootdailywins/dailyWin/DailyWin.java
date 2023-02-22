@@ -1,17 +1,26 @@
 package pl.glownia.maciej.springbootdailywins.dailyWin;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+@Entity(name = "dailywins")// mapping bean into database table
 public class DailyWin {
 
+    @Id
+    @GeneratedValue
     private int id;
     private String username;
     @Size(min = 10, message = "Be more creative. Enter at least 10 characters.")
     private String description;
     private LocalDate targetDate;
     private boolean done;
+
+    public DailyWin() {
+    } // needed here - without it status=500, No default constructor for entity occur
 
     public DailyWin(int id, String username, String description, LocalDate targetDate, boolean done) {
         this.id = id;

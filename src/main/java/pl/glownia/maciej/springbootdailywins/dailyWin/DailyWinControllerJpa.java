@@ -9,31 +9,34 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-class DailyWinController {
+@SessionAttributes("name")
+class DailyWinControllerJpa {
 
-    public DailyWinController(DailyWinService dailyWinService) {
+    public DailyWinControllerJpa(DailyWinRepository dailyWinRepository) {
         super();
-        this.dailyWinService = dailyWinService;
+        this.dailyWinRepository = dailyWinRepository;
     }
 
-    private DailyWinService dailyWinService;
+    private DailyWinRepository dailyWinRepository;
 
     @RequestMapping("list-dailyWins")
     public String listAllDailyWins(ModelMap model) {
         String username = getLoggedInUsername(model);
-        List<DailyWin> dailyWins = dailyWinService.findByUsername(username);
+
+        List<DailyWin> dailyWins = dailyWinRepository.findByUsername(username);
         model.addAttribute("dailyWins", dailyWins);
+
         return "listDailyWins";
     }
 
     @RequestMapping(value = "add-dailyWin", method = RequestMethod.GET)
     public String showNewDailyWinPage(ModelMap model) {
-        // Mapping this and present to this form is available on localhost
         String username = getLoggedInUsername(model);
         DailyWin dailyWin = new DailyWin(0, username, "", LocalDate.now(), false);
         model.put("dailyWin", dailyWin);
@@ -46,25 +49,25 @@ class DailyWinController {
     @RequestMapping(value = "add-dailyWin", method = RequestMethod.POST)
     public String addNewDailyWinPage(ModelMap model, @Valid DailyWin dailyWin, BindingResult result) {
 
-        // protect from go to the list of daily wins
         if (result.hasErrors()) {
             return "dailyWin";
         }
 
         String username = getLoggedInUsername(model);
-        dailyWinService.addDailyWin(username, dailyWin.getDescription(), dailyWin.getTargetDate(), false); // then adding to the list to be able to display
-        return "redirect:list-dailyWins"; // use URL so list-dailyWins not a view, so not listDailyWins
+        dailyWin.setUsername(username);
+        dailyWinRepository.save(dailyWin);
+        return "redirect:list-dailyWins";
     }
 
     @RequestMapping("delete-dailyWin")
     public String deleteDailyWin(@RequestParam int id) {
-        dailyWinService.deleteById(id);
+        dailyWinRepository.deleteById(id);
         return "redirect:list-dailyWins";
     }
 
     @RequestMapping(value = "update-dailyWin", method = RequestMethod.GET)
     public String showUpdateDailyWinPage(@RequestParam int id, ModelMap model) {
-        DailyWin dailyWin = dailyWinService.findById(id);
+        DailyWin dailyWin = dailyWinRepository.findById(id).get();
         model.addAttribute("dailyWin", dailyWin);
         return "dailyWin";
     }
@@ -72,14 +75,13 @@ class DailyWinController {
     @RequestMapping(value = "update-dailyWin", method = RequestMethod.POST)
     public String updateDailyWinPage(ModelMap model, @Valid DailyWin dailyWin, BindingResult result) {
 
-        // protect from go to the list of daily wins
         if (result.hasErrors()) {
             return "dailyWin";
         }
 
         String username = getLoggedInUsername(model);
         dailyWin.setUsername(username); // avoid to be username lost when updating a task
-        dailyWinService.updateDailyWin(dailyWin);
+        dailyWinRepository.save(dailyWin);
         return "redirect:list-dailyWins";
     }
 
