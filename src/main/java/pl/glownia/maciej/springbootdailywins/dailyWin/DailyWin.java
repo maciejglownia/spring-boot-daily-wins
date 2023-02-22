@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-@Entity// mapping bean into database table
+@Entity (name="dailywins")// mapping bean into database table
 public class DailyWin {
 
     @Id
