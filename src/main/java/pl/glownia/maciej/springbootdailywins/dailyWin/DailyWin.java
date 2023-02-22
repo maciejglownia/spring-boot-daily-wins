@@ -1,11 +1,17 @@
 package pl.glownia.maciej.springbootdailywins.dailyWin;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+@Entity// mapping bean into database table
 public class DailyWin {
 
+    @Id
+    @GeneratedValue
     private int id;
     private String username;
     @Size(min = 10, message = "Be more creative. Enter at least 10 characters.")
