@@ -19,6 +19,8 @@ public class DailyWin {
     private LocalDate targetDate;
     private boolean done;
 
+    public DailyWin() {} // needed here - without it status=500, No default constructor for entity occur
+
     public DailyWin(int id, String username, String description, LocalDate targetDate, boolean done) {
         this.id = id;
         this.username = username;
