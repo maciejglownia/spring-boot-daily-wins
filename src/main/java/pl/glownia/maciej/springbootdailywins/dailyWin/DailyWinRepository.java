@@ -7,6 +7,4 @@ import java.util.List;
 public interface DailyWinRepository extends JpaRepository<DailyWin, Integer> {
 
     public List<DailyWin> findByUsername(String username);
-
-
 }

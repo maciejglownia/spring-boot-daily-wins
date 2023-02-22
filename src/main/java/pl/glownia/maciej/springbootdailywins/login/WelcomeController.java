@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("name")
 public class WelcomeController {
 
-    /**Login will be handled by Spring Security*/
+    /**
+     * Login will be handled by Spring Security
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String gotoWelcomePage(ModelMap model) {
         model.put("name", getLoggedInUsername());

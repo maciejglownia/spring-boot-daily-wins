@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-@Entity (name="dailywins")// mapping bean into database table
+@Entity(name = "dailywins")// mapping bean into database table
 public class DailyWin {
 
     @Id
@@ -19,7 +19,8 @@ public class DailyWin {
     private LocalDate targetDate;
     private boolean done;
 
-    public DailyWin() {} // needed here - without it status=500, No default constructor for entity occur
+    public DailyWin() {
+    } // needed here - without it status=500, No default constructor for entity occur
 
     public DailyWin(int id, String username, String description, LocalDate targetDate, boolean done) {
         this.id = id;
